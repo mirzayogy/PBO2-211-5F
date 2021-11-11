@@ -5,6 +5,12 @@
  */
 package com.mirzayogy.pbo2.view.admin;
 
+import com.mirzayogy.pbo2.model.JenisBarang;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author mirza
@@ -16,6 +22,7 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
      */
     public JenisBarangViewFrame() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -28,7 +35,7 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        tfCari = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -40,26 +47,42 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setText("Cari Jenis Barang");
 
+        tfCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCariActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Cari");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jLabel2.setText("Data Jenis Barang");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nama Jenis Barang"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(150);
+        }
 
         jButton2.setText("Tambah");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -76,8 +99,18 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
         });
 
         jButton4.setText("Hapus");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Batal");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Tutup");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -97,7 +130,7 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1)
+                        .addComponent(tfCari)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
@@ -124,7 +157,7 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -149,14 +182,90 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JenisBarangAddFrame jenisBarangAddFrame = new JenisBarangAddFrame();
-        jenisBarangAddFrame.setVisible(true);
+        
+        TableModel model = jTable1.getModel();
+        int barisTerpilih = jTable1.getSelectedRow();
+        
+        if(barisTerpilih >= 0){
+            JenisBarang jenisBarang = new JenisBarang();
+            String idTable = model.getValueAt(barisTerpilih,0).toString();
+            int idInt = Integer.parseInt(idTable);
+            jenisBarang.setId(idInt);
+            jenisBarang.setNamajenisbarang(model.getValueAt(barisTerpilih,1).toString());
+            JenisBarangAddFrame jenisBarangAddFrame = new JenisBarangAddFrame(jenisBarang);
+            jenisBarangAddFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih dulu datanya");
+        }
+        
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        JenisBarang jenisBarang = new JenisBarang();
+        ArrayList<JenisBarang> list = jenisBarang.read();
+        tampilkanData(list);
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JenisBarang jenisBarang = new JenisBarang();
+        ArrayList<JenisBarang> list = jenisBarang.search(tfCari.getText());
+        tampilkanData(list);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tfCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCariActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCariActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JenisBarang jenisBarang = new JenisBarang();
+        ArrayList<JenisBarang> list = jenisBarang.read();
+        tampilkanData(list);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        TableModel model = jTable1.getModel();
+        int barisTerpilih = jTable1.getSelectedRow();
+        
+        if(barisTerpilih >= 0){
+            int pilihan = JOptionPane.showConfirmDialog(null, 
+                    "Yakin hapus?",
+                    "Konfirmasi Hapus",
+                    JOptionPane.YES_NO_OPTION);
+            
+            if(pilihan == 0){
+                JenisBarang jenisBarang = new JenisBarang();
+                String idTable = model.getValueAt(barisTerpilih,0).toString();
+                int idInt = Integer.parseInt(idTable);
+                jenisBarang.setId(idInt);
+                jenisBarang.delete();
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih dulu datanya");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    public void tampilkanData(ArrayList<JenisBarang> list){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        if(list.size() > 0){
+            Object[] row = new Object[2];
+            
+            for (int i = 0; i < list.size(); i++) {
+                row[0] = list.get(i).getId();
+                row[1] = list.get(i).getNamajenisbarang();
+                
+                model.addRow(row);
+            }
+            
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -204,6 +313,6 @@ public class JenisBarangViewFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField tfCari;
     // End of variables declaration//GEN-END:variables
 }

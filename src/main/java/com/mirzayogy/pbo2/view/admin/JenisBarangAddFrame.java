@@ -5,6 +5,9 @@
  */
 package com.mirzayogy.pbo2.view.admin;
 
+import com.mirzayogy.pbo2.model.JenisBarang;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mirza
@@ -14,8 +17,25 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
     /**
      * Creates new form JenisBarangAddFrame
      */
+    public String status;
+    
     public JenisBarangAddFrame() {
         initComponents();
+        setLocationRelativeTo(null);
+        tfId.setEnabled(false);
+        tfId.setText("NULL");
+        tfNamajenisbarang.requestFocus();
+        status = "TAMBAH";
+    }
+    
+    public JenisBarangAddFrame(JenisBarang jenisBarang) {
+        initComponents();
+        setLocationRelativeTo(null);
+        tfId.setEnabled(false);
+        tfId.setText(String.valueOf(jenisBarang.getId()));
+        tfNamajenisbarang.setText(jenisBarang.getNamajenisbarang());
+        tfNamajenisbarang.requestFocus();
+        status = "UBAH";
     }
 
     /**
@@ -29,9 +49,9 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        tfNamajenisbarang = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        tfId = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
 
@@ -79,8 +99,8 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))))
+                            .addComponent(tfId)
+                            .addComponent(tfNamajenisbarang, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -91,11 +111,11 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfNamajenisbarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton7)
@@ -107,7 +127,25 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        JenisBarang jenisBarang = new JenisBarang();
+        jenisBarang.setNamajenisbarang(tfNamajenisbarang.getText());
+        
+        if(status.equals("TAMBAH")){
+            if(jenisBarang.create()){
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal Insert Data");
+            }
+        } else {
+            jenisBarang.setId(Integer.parseInt(tfId.getText()));
+            if(jenisBarang.update()){
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal Update Data");
+            }
+        }
+        
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -155,7 +193,7 @@ public class JenisBarangAddFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField tfId;
+    private javax.swing.JTextField tfNamajenisbarang;
     // End of variables declaration//GEN-END:variables
 }

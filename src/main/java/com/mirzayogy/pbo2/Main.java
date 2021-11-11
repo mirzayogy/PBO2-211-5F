@@ -4,6 +4,7 @@ import com.mirzayogy.pbo2.model.JenisBarang;
 import com.mirzayogy.pbo2.model.Pengguna;
 import com.mirzayogy.pbo2.view.LoginFrame;
 import com.mirzayogy.pbo2.view.MainPublic;
+import com.mirzayogy.pbo2.view.admin.JenisBarangViewFrame;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -49,9 +50,9 @@ public class Main {
 //            System.out.println(list.get(i).getNamajenisbarang());
 //        }
 
-        ArrayList<JenisBarang> list = jenisBarang.search("pakai");
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).getNamajenisbarang());
-        }
+//       
+
+        JenisBarangViewFrame jenisBarangViewFrame = new JenisBarangViewFrame();
+        jenisBarangViewFrame.setVisible(true);
     }
 }
