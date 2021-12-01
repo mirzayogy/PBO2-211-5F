@@ -5,6 +5,7 @@
  */
 package com.mirzayogy.pbo2.view;
 
+import com.mirzayogy.pbo2.libs.Pref;
 import com.mirzayogy.pbo2.model.Pengguna;
 import com.mirzayogy.pbo2.view.admin.MainAdminFrame;
 import com.mirzayogy.pbo2.view.kasir.MainKasirFrame;
@@ -111,6 +112,10 @@ public class LoginFrame extends javax.swing.JFrame {
         pengguna.setPassword(new String(jtfPassword.getPassword()));
         
         if(pengguna.login()){
+            
+            Pref pref = new Pref();
+            pref.simpan(pengguna);
+            
             if(pengguna.isIsAdmin()){
                 MainAdminFrame mainAdminFrame = new MainAdminFrame();
                 mainAdminFrame.setLocationRelativeTo(null);
@@ -120,6 +125,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 mainKasirFrame.setLocationRelativeTo(null);
                 mainKasirFrame.setVisible(true);
             }
+            dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Login tidak sesuai");
         }
