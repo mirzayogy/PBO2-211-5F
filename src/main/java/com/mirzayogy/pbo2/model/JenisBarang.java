@@ -16,6 +16,11 @@ public class JenisBarang {
     private Database database;
     private Connection connection;
     
+    @Override
+    public String toString(){
+        return namajenisbarang;
+    }
+    
     public boolean create(){
         
         String insertSQL = "INSERT INTO jenisbarang VALUES (NULL, ?)";

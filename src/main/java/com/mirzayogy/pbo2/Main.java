@@ -6,6 +6,7 @@ import com.mirzayogy.pbo2.model.JenisBarang;
 import com.mirzayogy.pbo2.model.Pengguna;
 import com.mirzayogy.pbo2.view.LoginFrame;
 import com.mirzayogy.pbo2.view.MainPublic;
+import com.mirzayogy.pbo2.view.admin.BarangViewFrame;
 import com.mirzayogy.pbo2.view.admin.JenisBarangViewFrame;
 import com.mirzayogy.pbo2.view.admin.MainAdminFrame;
 import com.mirzayogy.pbo2.view.kasir.MainKasirFrame;
@@ -30,12 +31,7 @@ public class Main {
 //                mainKasirFrame.setVisible(true);
 //            }
 //        }
-        Barang barang = new Barang();
-        ArrayList<Barang> list = barang.read();
-        
-        for (int i = 0; i < list.size(); i++) {
-            System.out.print(list.get(i).getNamaBarang() + " ");
-            System.out.println(list.get(i).getJenisBarang().getNamajenisbarang());
-        }
+        BarangViewFrame barangViewFrame = new BarangViewFrame();
+        barangViewFrame.setVisible(true);
     }
 }

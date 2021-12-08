@@ -127,6 +127,8 @@ public class Barang {
         
         try{
             PreparedStatement preparedStatement = this.connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, keywords);
+            preparedStatement.setString(2, keywords);
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next()){
