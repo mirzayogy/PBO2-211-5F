@@ -5,9 +5,12 @@
  */
 package com.mirzayogy.pbo2.view.admin;
 
+import com.mirzayogy.pbo2.model.Barang;
 import com.mirzayogy.pbo2.model.JenisBarang;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,8 +23,39 @@ public class BarangAddFrame extends javax.swing.JFrame {
      */
     public BarangAddFrame() {
         initComponents();
+        setLocationRelativeTo(null);
         isiDataCb();
+        tfId.setEnabled(false);
+        tfId.setText("NULL");
+        tfNamaBarang.requestFocus();
     }
+
+    BarangAddFrame(Barang barang) {
+        initComponents();
+        setLocationRelativeTo(null);
+        isiDataCb();
+        tfId.setEnabled(false);
+        tfId.setText(String.valueOf(barang.getId()));
+        
+        barang.find();
+        tfNamaBarang.setText(barang.getNamaBarang());
+        tfHarga.setText(String.valueOf(barang.getHarga()));
+        
+        for (int i = 0; i < cbJenisBarang.getItemCount(); i++) {
+            JenisBarang jenisBarang = new JenisBarang();
+                cbJenisBarang.setSelectedIndex(i);
+                jenisBarang.setId(((JenisBarang) cbJenisBarang.getSelectedItem()).getId());
+                if (jenisBarang.getId() == barang.getJenisBarang().getId()) {
+                    cbJenisBarang.setSelectedIndex(i);
+                    break;
+                }
+            }
+        
+        
+        tfNamaBarang.requestFocus();
+    }
+    
+    
     
     public void isiDataCb(){
         JenisBarang jenisBarang = new JenisBarang();
@@ -62,7 +96,7 @@ public class BarangAddFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel2.setText("Data Barang");
+        jLabel2.setText("Input Data Barang");
 
         jLabel1.setText("Nama Barang");
 
@@ -94,7 +128,13 @@ public class BarangAddFrame extends javax.swing.JFrame {
 
         cbJenisBarang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        tfHarga.setText("jTextField1");
+        tfHarga.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        tfHarga.setText("0");
+        tfHarga.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfHargaKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,13 +157,14 @@ public class BarangAddFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfId)
-                            .addComponent(tfNamaBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                            .addComponent(tfNamaBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
                             .addComponent(cbJenisBarang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(tfHarga))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(157, 157, 157))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,7 +187,7 @@ public class BarangAddFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton7)
                     .addComponent(jButton6))
@@ -157,24 +198,29 @@ public class BarangAddFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-//        JenisBarang jenisBarang = new JenisBarang();
-//        jenisBarang.setNamajenisbarang(tfNamaBarang.getText());
-//
-//        if(status.equals("TAMBAH")){
-//            if(jenisBarang.create()){
-//                dispose();
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Gagal Insert Data");
-//            }
-//        } else {
-//            jenisBarang.setId(Integer.parseInt(tfId.getText()));
-//            if(jenisBarang.update()){
-//                dispose();
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Gagal Update Data");
-//            }
-//        }
-
+        
+        JenisBarang jbComboBox = ((JenisBarang) cbJenisBarang.getSelectedItem());
+        
+        Barang barang = new Barang();
+        barang.setNamaBarang(tfNamaBarang.getText());
+        barang.setJenisBarang(jbComboBox);
+        barang.setHarga(Float.parseFloat(tfHarga.getText()));
+        
+        if(tfId.getText().equals("NULL")){
+            if(barang.create()){
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal Insert Data");
+            }
+        } else {
+            barang.setId(Integer.parseInt(tfId.getText()));
+            if(barang.update()){
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal Update Data");
+            }
+        }
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -184,6 +230,14 @@ public class BarangAddFrame extends javax.swing.JFrame {
     private void tfNamaBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaBarangActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNamaBarangActionPerformed
+
+    private void tfHargaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfHargaKeyTyped
+        char enter = evt.getKeyChar();
+        if (!Character.isDigit(enter) && enter != KeyEvent.VK_PERIOD) {
+            evt.consume();
+//            System.out.println(enter);
+        }
+    }//GEN-LAST:event_tfHargaKeyTyped
 
     /**
      * @param args the command line arguments

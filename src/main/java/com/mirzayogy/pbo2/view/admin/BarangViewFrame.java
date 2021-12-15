@@ -195,13 +195,12 @@ public class BarangViewFrame extends javax.swing.JFrame {
         int barisTerpilih = jTable1.getSelectedRow();
 
         if(barisTerpilih >= 0){
-            JenisBarang jenisBarang = new JenisBarang();
+            Barang barang = new Barang();
             String idTable = model.getValueAt(barisTerpilih,0).toString();
             int idInt = Integer.parseInt(idTable);
-            jenisBarang.setId(idInt);
-            jenisBarang.setNamajenisbarang(model.getValueAt(barisTerpilih,1).toString());
-            JenisBarangAddFrame jenisBarangAddFrame = new JenisBarangAddFrame(jenisBarang);
-            jenisBarangAddFrame.setVisible(true);
+            barang.setId(idInt);
+            BarangAddFrame barangAddFrame = new BarangAddFrame(barang);
+            barangAddFrame.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Pilih dulu datanya");
         }

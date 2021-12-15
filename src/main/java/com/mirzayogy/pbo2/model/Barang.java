@@ -155,6 +155,38 @@ public class Barang {
         
         return null;
     }
+    
+    public void find(){
+        
+        String selectSQL = "SELECT barang.*, jenisbarang.namajenisbarang FROM barang \n" +
+"INNER JOIN jenisbarang ON barang.idjenisbarang = jenisbarang.id "
+                + "WHERE barang.id = ?" ;
+        
+        this.database = new Database();
+        this.connection = this.database.getConnection();
+        
+        try{
+            PreparedStatement preparedStatement = this.connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, this.id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+                
+                setId(rs.getInt("id"));
+                setNamaBarang(rs.getString("namabarang"));
+                setHarga(rs.getDouble("harga"));
+                
+                JenisBarang jb = new JenisBarang();
+                jb.setId(rs.getInt("idjenisbarang"));
+                jb.setNamajenisbarang(rs.getString("namajenisbarang"));
+                
+                setJenisBarang(jb);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JenisBarang.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public int getId() {
         return id;
