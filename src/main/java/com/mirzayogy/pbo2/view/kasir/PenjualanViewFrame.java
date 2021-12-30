@@ -1,27 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.mirzayogy.pbo2.view.admin;
+package com.mirzayogy.pbo2.view.kasir;
 
 import com.mirzayogy.pbo2.model.Barang;
 import com.mirzayogy.pbo2.model.JenisBarang;
+import com.mirzayogy.pbo2.model.Penjualan;
+import com.mirzayogy.pbo2.view.admin.BarangAddFrame;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  *
  * @author mirza
  */
-public class BarangViewFrame extends javax.swing.JFrame {
+public class PenjualanViewFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form BarangViewFrame
+     * Creates new form PenjualanViewFrame
      */
-    public BarangViewFrame() {
+    public PenjualanViewFrame() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -48,11 +51,6 @@ public class BarangViewFrame extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-        });
 
         jLabel1.setText("Cari Barang");
 
@@ -70,17 +68,20 @@ public class BarangViewFrame extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel2.setText("Data Barang");
+        jLabel2.setText("Data Penjualan");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nama Barang", "Jenis Barang", "Harga"
+                "Id", "Tanggal", "Nama Kasir", "Status"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         jButton2.setText("Tambah");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +125,7 @@ public class BarangViewFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -179,14 +180,14 @@ public class BarangViewFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tfCariActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Barang barang = new Barang();
-        ArrayList<Barang> list = barang.search(tfCari.getText());
+        Penjualan penjualan = new Penjualan();
+        ArrayList<Penjualan> list = penjualan.search(tfCari.getText());
         tampilkanData(list);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        BarangAddFrame barangAddFrame = new BarangAddFrame();
-        barangAddFrame.setVisible(true);
+        PenjualanAddFrame penjualanAddFrame = new PenjualanAddFrame();
+        penjualanAddFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -199,12 +200,11 @@ public class BarangViewFrame extends javax.swing.JFrame {
             String idTable = model.getValueAt(barisTerpilih,0).toString();
             int idInt = Integer.parseInt(idTable);
             barang.setId(idInt);
-            BarangAddFrame barangAddFrame = new BarangAddFrame(barang);
-            barangAddFrame.setVisible(true);
+//            BarangAddFrame barangAddFrame = new BarangAddFrame(barang);
+//            barangAddFrame.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Pilih dulu datanya");
         }
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -231,8 +231,8 @@ public class BarangViewFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Barang barang = new Barang();
-        ArrayList<Barang> list = barang.read();
+        Penjualan penjualan = new Penjualan();
+        ArrayList<Penjualan> list = penjualan.read();
         tampilkanData(list);
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -240,13 +240,7 @@ public class BarangViewFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        Barang barang = new Barang();
-        ArrayList<Barang> list = barang.read();
-        tampilkanData(list);
-    }//GEN-LAST:event_formWindowActivated
-
-    public void tampilkanData(ArrayList<Barang> list){
+    public void tampilkanData(ArrayList<Penjualan> list){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         
@@ -255,9 +249,9 @@ public class BarangViewFrame extends javax.swing.JFrame {
             
             for (int i = 0; i < list.size(); i++) {
                 row[0] = list.get(i).getId();
-                row[1] = list.get(i).getNamaBarang();
-                row[2] = list.get(i).getJenisBarang().getNamajenisbarang();
-                row[3] = list.get(i).getHarga();
+                row[1] = list.get(i).getTanggal();
+                row[2] = list.get(i).getPengguna().getNamaLengkap();
+                row[3] = list.get(i).getStatus();
                 
                 model.addRow(row);
             }
@@ -281,20 +275,20 @@ public class BarangViewFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BarangViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PenjualanViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BarangViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PenjualanViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BarangViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PenjualanViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BarangViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PenjualanViewFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BarangViewFrame().setVisible(true);
+                new PenjualanViewFrame().setVisible(true);
             }
         });
     }
